@@ -295,12 +295,12 @@ The results will be saved to:
 
 | model | mean_acc(top1) | mean_acc(top5) | improvement(top1) compared to Exp.2 |
 | :--- | :---: | :---: | :--: |
-| resnet50 | 98.97% | 99.90% | **+40.5%p**
+| resnet50 | 98.97% | 99.90% | +40.5%p
 | resnet50_pretrained | 99.62% | 99.99% | +29.1%p
-| vit_small | % | % |
-| vit_small_pretrained | % | % |
+| vit_small | 99.99% | 99.99% | **+41.19%p**
+| vit_small_pretrained | 99.99% | 99.99% | +10.18%p
 
-*Hypothesis 2*: Fine-tuning을 진행할 시 모델 성능이 전반적으로 향상될 것이다. 기존에 낮은 성능을 보였던 모델의 성능 향상 정도가 가장 크게 나타날 것이다. ☑️
+*Hypothesis 2*: Fine-tuning을 진행할 시 모델 성능이 전반적으로 향상될 것이다. 기존에 낮은 성능을 보였던 모델의 성능 향상 정도가 가장 크게 나타날 것이다. 🔺
 
 실제로 4가지 모델이 전부 유사한 성능을 보임을 확인할 수 있어, fine-tuning 시 CNN 기반, Transformer 기반 모델의 robustness 차이가 거의 사라짐을 알 수 있다. 
 
@@ -335,5 +335,5 @@ bash run_background_all.sh
 
 ---
 
-> #### 강건성은 Transformer 기반 모델이 CNN 기반 모델보다 더 좋으며, Transformer 기반 모델은 배경이 아닌 사물 자체에 더 집중하기 때문에 이러한 결과가 나타난다.
+> ### 강건성은 Transformer 기반 모델이 CNN 기반 모델보다 더 좋으며, Transformer 기반 모델은 배경이 아닌 사물 자체에 더 집중하기 때문에 이러한 결과가 나타난다.
 
