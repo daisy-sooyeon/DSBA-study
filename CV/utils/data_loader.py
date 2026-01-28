@@ -241,11 +241,10 @@ def get_combined_cifar10c_loader(data_root, corruptions, batch_size=128, split_r
 # =========================================================
 # CIFAR-10-C Fine-tuning 평가용 Loader
 # =========================================================
-def get_test_only_robustness_loader(data_root, corruption, severity, batch_size=128):
+def get_test_only_robustness_loader(data_root, corruption, severity, batch_size=128, image_size=32):
     """
-    [평가용 Loader]
-    특정 Corruption, Severity 데이터(10,000장) 중 
-    학습에 쓰지 않은 '뒤쪽 10% (1,000장)'만 가져옵니다.
+    [평가용 Loader] 
+    image_size 인자를 받아서 224일 경우 Resize를 수행합니다.
     """
     npy_path = os.path.join(data_root, corruption + '.npy')
     label_path = os.path.join(data_root, 'labels.npy')
@@ -255,41 +254,46 @@ def get_test_only_robustness_loader(data_root, corruption, severity, batch_size=
         
     imgs = np.load(npy_path)
     lbls = np.load(label_path)
-    if len(lbls) == 10000: lbls = np.concatenate([lbls] * 5)
     
+    if len(lbls) == 10000: 
+        lbls = np.concatenate([lbls] * 5)
+    
+    # Severity 별 인덱스 계산 (0~10000, 10000~20000 ...)
     start_idx_sev = (severity - 1) * 10000
     end_idx_sev = severity * 10000
     
     sev_imgs = imgs[start_idx_sev:end_idx_sev]
     sev_lbls = lbls[start_idx_sev:end_idx_sev]
     
-    # 뒤쪽 10% (9001번째 ~ 10000번째)만 잘라냄
-    split_point = int(10000 * 0.9) # 9000
-    
-    test_imgs = sev_imgs[split_point:] 
-    test_lbls = sev_lbls[split_point:] 
+    # 뒤쪽 10% (Test Set)만 사용
+    split_point = int(10000 * 0.9)
+    test_imgs = sev_imgs[split_point:]
+    test_lbls = sev_lbls[split_point:]
     
     mean = (0.4914, 0.4822, 0.4465)
     std = (0.2023, 0.1994, 0.2010)
-    transform = transforms.Compose([
-        transforms.ToTensor(), 
-        transforms.Normalize(mean, std)
-    ])
+    
+    # Transform 분기
+    if image_size == 224:
+        transform = transforms.Compose([
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean, std)
+        ])
+    else:
+        transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize(mean, std)
+        ])
     
     class TestDataset(Dataset):
         def __init__(self, i, l, t):
-            self.i = i
-            self.l = l
-            self.t = t
+            self.i = i; self.l = l; self.t = t
         def __len__(self): return len(self.i)
         def __getitem__(self, idx):
             img = self.i[idx]
-            # Channel First 케이스 대응
-            if img.shape[0] == 3 and img.shape[2] != 3: 
-                img = img.transpose(1, 2, 0)
             img = Image.fromarray(img)
             return self.t(img), self.l[idx]
             
     dataset = TestDataset(test_imgs, test_lbls, transform)
-    
-    return DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=4)
+    return DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
