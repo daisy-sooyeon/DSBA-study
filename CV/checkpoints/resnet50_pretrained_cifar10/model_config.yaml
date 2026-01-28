@@ -1,0 +1,12 @@
+model_name: "resnet50"
+num_classes: 10  # Dataset에 맞게 변경 (CIFAR10이면 10, 아니면 200)
+pretrained: True        # [핵심] ImageNet Weights 로드
+
+# Fine-tuning 설정 (LR을 줄임)
+batch_size: 64
+epochs: 20              # 이미 똑똑해서 100번까지 안 가도 금방 수렴함
+learning_rate: 0.01     # Scratch의 1/10 수준으로 줄여서 미세 조정
+weight_decay: 5e-4
+optimizer: "sgd"
+momentum: 0.9
+device: "cuda"

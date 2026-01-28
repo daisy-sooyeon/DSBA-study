@@ -1,0 +1,12 @@
+model_name: "vit_small_patch16_224"
+num_classes: 10
+pretrained: True      
+image_size: 224
+
+# Fine-tuning 설정
+batch_size: 64
+epochs: 20             
+learning_rate: 1e-5    
+weight_decay: 1e-4      # 이미 학습된 가중치라 규제를 좀 풀어줌
+optimizer: "adamw"
+device: "cuda"

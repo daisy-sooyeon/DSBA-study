@@ -1,0 +1,13 @@
+__pycache__/
+*.pth
+*.pt
+.DS_Store
+data/
+lobs/
+wandb/
+logs/
+*.jpg
+*.png
+*.JPEG
+__pycache__/
+data/

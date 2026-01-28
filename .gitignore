@@ -1,0 +1,9 @@
+cv/
+wandb/
+logs/
+*.pth
+__pycache__/
+.DS_Store
+**/*.jpg
+**/*.png
+data/
