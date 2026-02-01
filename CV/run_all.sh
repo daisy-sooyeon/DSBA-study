@@ -6,7 +6,7 @@ set -e
 # ==========================================
 # 1. 실험할 모델과 데이터셋 설정
 # ==========================================
-MODELS=("resnet50" "resnet50_pretrained" "vit_small" "vit_small_pretrained") 
+MODELS=("vit_small") 
 DATASETS=("cifar10") 
 GPU_ID=0  
 
@@ -17,7 +17,7 @@ for MODEL in "${MODELS[@]}"
 do
     for DATA in "${DATASETS[@]}"
     do
-        echo "========================================================"
+        echo "======================================================c=="
         echo "🚀 Starting Experiment: [ Model: $MODEL | Data: $DATA ]"
         echo "========================================================"
 
@@ -35,17 +35,17 @@ do
 
         # (2) 학습 실행 (Train)
         echo "Step 1. Training ($MODEL on $DATA)..."
-        CUDA_VISIBLE_DEVICES=$GPU_ID python train.py \
-            --model "$MODEL" \
-            --data "$DATA" 
+        CUDA_VISIBLE_DEVICES=$GPU_ID python main.py model=$MODEL dataset=$DATA 
         
-        IS_PRETRAINED=$(python -c "import yaml; print(yaml.safe_load(open('./configs/models/${MODEL}.yaml')).get('pretrained', False))")
-        
+
+        # (3) 학습 결과 파일 이동 및 정리
+        # 파일명 형식: {DATA}_{MODEL}_{is_pretrained}_best.pth
+        IS_PRETRAINED=$(python -c "import yaml; pretrained = yaml.safe_load(open('./configs/model/${MODEL}.yaml')).get('model', {}).get('pretrained', False); print(str(pretrained))")
         echo "   -> Detected Pretrained Status: $IS_PRETRAINED"
 
         # (3) 학습 결과 파일 이동 및 정리
-        # 파일명 형식: {DATA}_{MODEL}_{IS_PRETRAINED}_best.pth
-        SOURCE_FILE="./logs/${DATA}_${MODEL}_${IS_PRETRAINED}_best.pth"
+        # 파일명 형식: {DATA}_{MODEL}_best.pth
+        SOURCE_FILE="./logs/${DATA}_${MODEL}_best.pth"
         
         if [ -f "$SOURCE_FILE" ]; then
             mv "$SOURCE_FILE" "$SAVE_DIR/best_model.pth"
@@ -55,21 +55,25 @@ do
         fi
         
         # 설정 파일 백업
-        cp "./configs/models/${MODEL}.yaml" "$SAVE_DIR/model_config.yaml"
-        cp "./configs/data/${DATA}.yaml" "$SAVE_DIR/data_config.yaml"
+        cp "./configs/model/${MODEL}.yaml" "$SAVE_DIR/model_config.yaml"
+        cp "./configs/dataset/${DATA}.yaml" "$SAVE_DIR/data_config.yaml"
 
         # (4) 강건성 평가 실행 (Eval)
         echo "Step 2. Evaluating Robustness on $DATA_ROOT_C..."
-        CUDA_VISIBLE_DEVICES=$GPU_ID python eval_robustness.py \
-            --config "./configs/models/${MODEL}.yaml" \
-            --weights "$SAVE_DIR/best_model.pth" \
-            --data_root "$DATA_ROOT_C"
+        CUDA_VISIBLE_DEVICES=$GPU_ID python -c "
+from src.eval_robustness import main
+from hydra import initialize_config_dir, compose
+import os
 
-        REAL_MODEL_NAME=$(python3 -c "import yaml; print(yaml.safe_load(open('$CONFIG'))['model_name'])")
-
+config_dir = os.path.abspath('./configs')
+with initialize_config_dir(version_base=None, config_dir=config_dir):
+    cfg = compose(config_name='config', overrides=['model=$MODEL', 'robustness.data_root=$DATA_ROOT_C'])
+    main(cfg, weights_path='$SAVE_DIR/best_model.pth')
+"
+        
         # (5) 평가 결과 이동
-        if [ -f "./logs/robustness_results_${REAL_MODEL_NAME}_${IS_PRETRAINED}.csv" ]; then
-            mv "./logs/robustness_results_${REAL_MODEL_NAME}_${IS_PRETRAINED}.csv" "$SAVE_DIR/robustness_results.csv"
+        if [ -f "./logs/robustness_results_${MODEL}.csv" ]; then
+            mv "./logs/robustness_results_${MODEL}.csv" "$SAVE_DIR/robustness_results.csv"
         fi
 
         echo "✅ Experiment Finished for $MODEL on $DATA"

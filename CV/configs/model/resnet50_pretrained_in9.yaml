@@ -1,0 +1,16 @@
+# @package _global_
+
+model:
+  name: resnet50
+  cfg_name: resnet50_pretrained_in9
+  num_classes: 9
+  pretrained: true
+  image_size: 224
+
+train:
+  epochs: 5
+  batch_size: 64
+  learning_rate: 1e-4
+  weight_decay: 1e-4
+  optimizer: adamw
+  device: cuda

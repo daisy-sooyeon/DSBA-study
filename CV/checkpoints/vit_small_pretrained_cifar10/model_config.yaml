@@ -1,12 +1,16 @@
-model_name: "vit_small_patch16_224"
-num_classes: 10
-pretrained: True        # [핵심] ImageNet Weights 로드
-image_size: 224
+# @package _global_
 
-# Fine-tuning 설정
-batch_size: 64
-epochs: 20              # ViT는 Pretrained 쓰면 수렴이 아주 빠름
-learning_rate: 1e-5     # 아주 조심스럽게 학습 (1e-4 -> 1e-5)
-weight_decay: 1e-4      # 이미 학습된 가중치라 규제를 좀 풀어줌
-optimizer: "adamw"
-device: "cuda"
+model:
+  name: vit_small_patch16_224
+  num_classes: 10
+  pretrained: true
+  image_size: 224
+  cfg_name: vit_small_pretrained
+
+train:
+  epochs: 20
+  batch_size: 64
+  learning_rate: 1e-5
+  weight_decay: 1e-4
+  optimizer: adamw
+  device: cuda

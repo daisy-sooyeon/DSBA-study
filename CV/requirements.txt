@@ -4,6 +4,7 @@ torchvision
 torchaudio
 wandb
 PyYAML
+hydra-core
 tqdm
 pandas
 timm

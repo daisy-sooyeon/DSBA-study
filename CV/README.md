@@ -37,6 +37,7 @@ Datasets:
 
 - **ImageNet-9**: 배경 의존성과 강건성 파악을 위한 데이터셋으로, ImageNet에서 가장 대표적인 9개 상위 클래스만 뽑고 물체가 아닌 배경을 바꾼 데이터셋
 
+> 데이터 경로: `./data/ImageNet9/bg_challenge/`  
 > `original`(Training 용), `mixed_rand`(배경을 다른 클래스의 배경으로 랜덤하게 바꾼 것, Test 용), `only_fg`(배경을 검은색으로 지우고 물체만 남긴 것, 보조)
 
 
@@ -56,9 +57,13 @@ Models:
 ```
 CV
 ├── README.md
+├── main.py
 ├── configs
+│   ├── config.yaml
 │   ├── defaults.yaml
-│   └── models
+│   ├── dataset/
+│   │   └── cifar10.yaml
+│   └── model/
 │       ├── resnet50.yaml
 │       ├── resnet50_pretrained.yaml
 │       ├── resnet50_pretrained_in9.yaml
@@ -69,18 +74,28 @@ CV
 │   ├── cifar10/
 │   ├── CIFAR-10-C/
 │   └── ImageNet9/
+│       └── bg_challenge/
+│           ├── original/
+│           ├── mixed_rand/
+│           └── only_fg/
 ├── models/
 │   ├── __init__.py
 │   └── factory.py 
-├── eval_background_robustness.py
-├── eval_robustness.py
-├── finetune.py
+├── src/
+│   ├── __init__.py
+│   ├── eval_background_robustness.py
+│   ├── eval_robustness.py
+│   ├── finetune.py
+│   └── train.py
 ├── run_background_all.sh
 ├── run_finetune_all.sh
-├── train.py
+├── run_all.sh
 └── utils
     ├── __init__.py
+    ├── common.py
+    ├── constants.py
     ├── data_loader.py
+    ├── imagenet_utils.py
     ├── logger.py
     └── metrics.py
 ```
@@ -99,8 +114,13 @@ pip install -r requirements.txt
 
 Place your dataset files in the following path:
 ```bash
-/CV/data
+./data/
 ```
+
+데이터셋 구조:
+- `./data/cifar10/` - CIFAR-10 데이터셋
+- `./data/CIFAR-10-C/` - CIFAR-10-C 데이터셋
+- `./data/ImageNet9/bg_challenge/` - ImageNet-9 데이터셋 (original, mixed_rand, only_fg 등 포함)
 
 **Step 3. Set WandB API key**
 ```bash
@@ -163,8 +183,16 @@ wandb login [API_KEY]
 
 #### Run all training jobs
 ```bash
+cd /workspace/CV
 bash run_all.sh
 ```
+
+또는 개별 모델 학습:
+```bash
+python main.py model=resnet50_pretrained dataset=cifar10
+python main.py model=vit_small_pretrained dataset=cifar10
+```
+
 Experiment 2는 Experiment 1에서 훈련된 최적 모델에 기반해 robustness를 평가하기 때문에 이 작업은 Experiment 1 & 2를 동시에 실행
 
 #### Output
@@ -188,10 +216,10 @@ Saved files include:
 
 | model | val_acc(top1)* | val_acc(top5)* | val_acc*@epoch | test_loss | test_acc(top1) | test_acc(top5) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| resnet50 | 70.46% | 96.98% | 38 | 0.9025 | 69.98% | 96.94% |
-| resnet50_pretrained | 83.38% | 99.2% | 20 | 0.6291 | 82.34% | 98.99% |
-| vit_small | 71.72% | 97.1% | 50 | 1.4487 | 71.39% | 97.17% |
-| **vit_small_pretrained** | 98.24% | 99.96% | 6 | 0.0914 | **98.01%** | **99.97%** |
+| resnet50 | 72.14% | 97.40% | 45 | 0.8155 | 71.51% | 97.96% |
+| resnet50_pretrained | 82.04% | 94.36% | 18 | 0.6358 | 82.10% | 99.01% |
+| vit_small | 54.02% | 94.56% | 44 | 1.2877 | 53.52% | 94.73% |
+| **vit_small_pretrained** | 98.76% | 100.00% | 18 | 0.0914 | **98.23%** | **99.94%** |
 
 <div align="center">
   <table width="100%">
@@ -244,7 +272,7 @@ Saved files include:
 The results will be saved to:
 
 ```
-/CV/checkpoints/{model_name}_{data_name}
+./checkpoints/{model_name}_{data_name}/
 ```
 
 | File                        | Description                         |
@@ -256,10 +284,10 @@ The results will be saved to:
 
 | model | mean_acc(top1) | mean_acc(top5) |
 | :--- | :---: | :---: |
-| resnet50 | 58.47% | 92.50% |
-| resnet50_pretrained | 70.52% | 96.69% |
-| vit_small | 58.80% | 93.29% |
-| **vit_small_pretrained** | **89.81%** | **98.69%** |
+| resnet50 | 62.45% | 94.82% |
+| resnet50_pretrained | 69.67% | 96.44% |
+| vit_small | 44.51% | 90.16% |
+| **vit_small_pretrained** | **91.37%** | **98.94%** |
 
 *Hypothesis 1*: 질감보다 모양에 초점을 맞춘 모델인 Transformer 기반의 모델이 CNN 기반의 모델보다 robustness가 높을 것이며, pretrained되어 있을수록 더 강건성이 높을 것이다. ☑️
 
@@ -275,6 +303,7 @@ The results will be saved to:
 
 #### Run all training jobs
 ```bash
+cd /workspace/CV
 bash run_finetune_all.sh
 ```
 
@@ -283,7 +312,7 @@ bash run_finetune_all.sh
 The results will be saved to:
 
 ```
-/CV/checkpoints/{model_name}_{data_name}
+./checkpoints/{model_name}_{data_name}/
 ```
 
 | File                        | Description                         |
@@ -295,10 +324,10 @@ The results will be saved to:
 
 | model | mean_acc(top1) | mean_acc(top5) | improvement(top1) compared to Exp.2 |
 | :--- | :---: | :---: | :--: |
-| resnet50 | 98.97% | 99.90% | +40.5%p
-| resnet50_pretrained | 99.62% | 99.99% | +29.1%p
-| vit_small | 99.9% | 99.99% | **+41.1%p**
-| vit_small_pretrained | 99.97% | 99.99% | +10.16%p
+| resnet50 | 93.01% | 99.86% | +30.56%p
+| resnet50_pretrained | 99.78% | 100.00% | +30.11%p
+| vit_small | 80.27% | 99.28% | **+35.76%p**
+| vit_small_pretrained | 99.92% | 100.00% | +8.55%p
 
 *Hypothesis 2*: Fine-tuning을 진행할 시 모델 성능이 전반적으로 향상될 것이다. 기존에 낮은 성능을 보였던 모델의 성능 향상 정도가 가장 크게 나타날 것이다. 🔺
 
@@ -321,15 +350,30 @@ The results will be saved to:
 
 #### Run all training jobs
 ```bash
+cd /workspace/CV
 bash run_background_all.sh
+```
+
+또는 개별 모델 실행:
+```bash
+python -c "
+from src.eval_background_robustness import main
+from hydra import initialize_config_dir, compose
+import os
+
+config_dir = os.path.abspath('./configs')
+with initialize_config_dir(version_base=None, config_dir=config_dir):
+    cfg = compose(config_name='config', overrides=['model=resnet50_pretrained_in9'])
+    main(cfg)
+"
 ```
 
 ### Result 
 
 | model | original_acc(test) | mixed_rand_acc | only_fg_acc | background gap
 | :--- | :---: | :---: | :--: | :--: |
-| resnet50_pretrained | Top-1: 97.28% / Top-5: 100.00% | Top-1: 80.40% / Top-5: 98.22% | Top-1: 91.04% / Top-5: 99.21% | 16.89%p |
-| **vit_small_pretrained** | Top-1: 98.52% / Top-5: 100.00% | Top-1: 87.41% / Top-5: 98.72% | Top-1: 93.85% / Top-5: 99.36% | **11.11%p**
+| resnet50_pretrained | Top-1: 95.80% / Top-5: 100.00% | Top-1: 80.91% / Top-5: 98.05% | Top-1: 90.42% / Top-5: 99.36% | 14.89%p |
+| **vit_small_pretrained** | Top-1: 94.32% / Top-5: 99.75% | Top-1: 78.27% / Top-5: 98.05% | Top-1: 86.52% / Top-5: 98.81% | **16.05%p**
 
 *Hypothesis 3*: 물체가 아닌 배경에 대한 의존도는 CNN 기반의 모델이 Transformer 기반의 모델보다 높을 것이다. 즉, CNN 기반 모델의 배경 의존도가 더 높을 것이다. ☑️
 

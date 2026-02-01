@@ -1,0 +1,38 @@
+seed: 42
+output_dir: ./outputs
+train:
+  epochs: 20
+  batch_size: 64
+  learning_rate: 0.01
+  weight_decay: 0.0005
+  optimizer: sgd
+  momentum: 0.9
+  device: cuda
+  log_dir: ./logs
+data:
+  num_workers: 4
+  batch_size: 64
+eval:
+  batch_size: 256
+  device: cuda
+robustness:
+  data_root: ./data/CIFAR-10-C
+  batch_size: 256
+  device: cuda
+background:
+  data_root: ./data/ImageNet9
+  epochs: 5
+  batch_size: 64
+  learning_rate: 0.0001
+  device: cuda
+model:
+  name: resnet50
+  cfg_name: resnet50_pretrained
+  num_classes: 10
+  pretrained: true
+  image_size: 32
+dataset:
+  name: cifar10
+  path: /workspace/cv/data/cifar10
+  num_classes: 10
+  image_size: 32

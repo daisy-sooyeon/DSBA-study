@@ -1,0 +1,2 @@
+- model=vit_small_pretrained
+- dataset=cifar10

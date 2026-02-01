@@ -1,0 +1,105 @@
+[2026-01-30 02:32:37,956][cifar10_resnet50_true][INFO] - --- Experiment: cifar10 + resnet50 ---
+[2026-01-30 02:32:37,959][cifar10_resnet50_true][INFO] - Config:
+model:
+  name: resnet50
+  num_classes: 10
+  pretrained: true
+  image_size: 32
+train:
+  epochs: 50
+  batch_size: 64
+  learning_rate: 0.1
+  weight_decay: 0.0005
+  optimizer: sgd
+  momentum: 0.9
+  device: cuda
+  log_dir: ./logs
+dataset:
+  name: cifar10
+  path: /workspace/cv/data/cifar10
+  num_classes: 10
+  image_size: 32
+data:
+  batch_size: 64
+  num_workers: 4
+seed: 42
+output_dir: ./outputs
+eval:
+  batch_size: 256
+  device: cuda
+robustness:
+  data_root: ./data/CIFAR-10-C
+  batch_size: 256
+  device: cuda
+background:
+  data_root: ./data/ImageNet9
+  epochs: 5
+  batch_size: 64
+  learning_rate: 0.0001
+  device: cuda
+
+[2026-01-30 02:32:39,507][timm.models._builder][INFO] - Loading pretrained weights from Hugging Face hub (timm/resnet50.a1_in1k)
+[2026-01-30 02:32:39,750][httpx][INFO] - HTTP Request: HEAD https://huggingface.co/timm/resnet50.a1_in1k/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+[2026-01-30 02:32:39,755][timm.models._hub][INFO] - [timm/resnet50.a1_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+[2026-01-30 02:32:39,805][timm.models._builder][INFO] - Missing keys (fc.weight, fc.bias) discovered while loading pretrained weights. This is expected if model is being adapted.
+[2026-01-30 02:32:39,913][cifar10_resnet50_true][INFO] - Optimizer: SGD (lr=0.1, momentum=0.9)
+[2026-01-30 02:33:11,452][cifar10_resnet50_true][INFO] - Epoch 1/50 | Train Loss: 1.7512 | Train Top1: 36.09% | Val Top1: 42.30% | Val Top5: 89.04%
+[2026-01-30 02:33:11,578][cifar10_resnet50_true][INFO] -    >>> Best model saved (Top1: 42.30%)
+[2026-01-30 02:33:43,751][cifar10_resnet50_true][INFO] - Epoch 2/50 | Train Loss: 1.3080 | Train Top1: 53.62% | Val Top1: 48.42% | Val Top5: 91.76%
+[2026-01-30 02:33:44,606][cifar10_resnet50_true][INFO] -    >>> Best model saved (Top1: 48.42%)
+[2026-01-30 02:34:16,516][cifar10_resnet50_true][INFO] - Epoch 3/50 | Train Loss: 1.1674 | Train Top1: 59.35% | Val Top1: 61.90% | Val Top5: 95.12%
+[2026-01-30 02:34:17,307][cifar10_resnet50_true][INFO] -    >>> Best model saved (Top1: 61.90%)
+[2026-01-30 02:34:49,466][cifar10_resnet50_true][INFO] - Epoch 4/50 | Train Loss: 0.9075 | Train Top1: 69.05% | Val Top1: 66.78% | Val Top5: 96.98%
+[2026-01-30 02:34:50,284][cifar10_resnet50_true][INFO] -    >>> Best model saved (Top1: 66.78%)
+[2026-01-30 02:35:22,314][cifar10_resnet50_true][INFO] - Epoch 5/50 | Train Loss: 0.8578 | Train Top1: 70.62% | Val Top1: 65.50% | Val Top5: 96.10%
+[2026-01-30 02:35:54,858][cifar10_resnet50_true][INFO] - Epoch 6/50 | Train Loss: 0.8251 | Train Top1: 72.28% | Val Top1: 68.14% | Val Top5: 96.62%
+[2026-01-30 02:35:55,619][cifar10_resnet50_true][INFO] -    >>> Best model saved (Top1: 68.14%)
+[2026-01-30 02:36:27,564][cifar10_resnet50_true][INFO] - Epoch 7/50 | Train Loss: 0.8279 | Train Top1: 72.10% | Val Top1: 68.82% | Val Top5: 96.80%
+[2026-01-30 02:36:28,449][cifar10_resnet50_true][INFO] -    >>> Best model saved (Top1: 68.82%)
+[2026-01-30 02:37:00,573][cifar10_resnet50_true][INFO] - Epoch 8/50 | Train Loss: 0.8124 | Train Top1: 72.75% | Val Top1: 65.36% | Val Top5: 96.74%
+[2026-01-30 02:37:32,995][cifar10_resnet50_true][INFO] - Epoch 9/50 | Train Loss: 0.8069 | Train Top1: 72.66% | Val Top1: 62.14% | Val Top5: 95.88%
+[2026-01-30 02:38:05,125][cifar10_resnet50_true][INFO] - Epoch 10/50 | Train Loss: 0.8050 | Train Top1: 72.68% | Val Top1: 67.96% | Val Top5: 96.86%
+[2026-01-30 02:38:37,247][cifar10_resnet50_true][INFO] - Epoch 11/50 | Train Loss: 0.8036 | Train Top1: 72.59% | Val Top1: 66.22% | Val Top5: 96.02%
+[2026-01-30 02:39:09,312][cifar10_resnet50_true][INFO] - Epoch 12/50 | Train Loss: 0.7976 | Train Top1: 73.03% | Val Top1: 67.22% | Val Top5: 97.28%
+[2026-01-30 02:39:41,590][cifar10_resnet50_true][INFO] - Epoch 13/50 | Train Loss: 0.7819 | Train Top1: 73.83% | Val Top1: 65.00% | Val Top5: 95.84%
+[2026-01-30 02:40:13,661][cifar10_resnet50_true][INFO] - Epoch 14/50 | Train Loss: 0.7691 | Train Top1: 74.25% | Val Top1: 71.90% | Val Top5: 97.18%
+[2026-01-30 02:40:14,477][cifar10_resnet50_true][INFO] -    >>> Best model saved (Top1: 71.90%)
+[2026-01-30 02:40:46,720][cifar10_resnet50_true][INFO] - Epoch 15/50 | Train Loss: 0.7635 | Train Top1: 74.16% | Val Top1: 63.26% | Val Top5: 95.80%
+[2026-01-30 02:41:18,883][cifar10_resnet50_true][INFO] - Epoch 16/50 | Train Loss: 0.7643 | Train Top1: 74.21% | Val Top1: 69.56% | Val Top5: 96.48%
+[2026-01-30 02:41:51,043][cifar10_resnet50_true][INFO] - Epoch 17/50 | Train Loss: 0.7564 | Train Top1: 74.55% | Val Top1: 68.30% | Val Top5: 96.82%
+[2026-01-30 02:42:23,099][cifar10_resnet50_true][INFO] - Epoch 18/50 | Train Loss: 0.7530 | Train Top1: 74.43% | Val Top1: 67.84% | Val Top5: 97.20%
+[2026-01-30 02:42:55,059][cifar10_resnet50_true][INFO] - Epoch 19/50 | Train Loss: 0.7610 | Train Top1: 74.26% | Val Top1: 71.46% | Val Top5: 97.10%
+[2026-01-30 02:43:27,250][cifar10_resnet50_true][INFO] - Epoch 20/50 | Train Loss: 0.7491 | Train Top1: 74.65% | Val Top1: 61.26% | Val Top5: 96.80%
+[2026-01-30 02:43:59,209][cifar10_resnet50_true][INFO] - Epoch 21/50 | Train Loss: 0.7425 | Train Top1: 75.09% | Val Top1: 70.46% | Val Top5: 97.00%
+[2026-01-30 02:44:31,223][cifar10_resnet50_true][INFO] - Epoch 22/50 | Train Loss: 0.7290 | Train Top1: 75.37% | Val Top1: 71.66% | Val Top5: 97.46%
+[2026-01-30 02:45:03,338][cifar10_resnet50_true][INFO] - Epoch 23/50 | Train Loss: 0.7377 | Train Top1: 75.08% | Val Top1: 71.80% | Val Top5: 97.52%
+[2026-01-30 02:45:35,544][cifar10_resnet50_true][INFO] - Epoch 24/50 | Train Loss: 0.7410 | Train Top1: 74.89% | Val Top1: 68.10% | Val Top5: 96.06%
+[2026-01-30 02:46:07,508][cifar10_resnet50_true][INFO] - Epoch 25/50 | Train Loss: 0.7337 | Train Top1: 75.31% | Val Top1: 69.30% | Val Top5: 96.60%
+[2026-01-30 02:46:39,514][cifar10_resnet50_true][INFO] - Epoch 26/50 | Train Loss: 0.7259 | Train Top1: 75.57% | Val Top1: 68.54% | Val Top5: 95.80%
+[2026-01-30 02:47:11,522][cifar10_resnet50_true][INFO] - Epoch 27/50 | Train Loss: 0.7332 | Train Top1: 75.08% | Val Top1: 70.46% | Val Top5: 97.00%
+[2026-01-30 02:47:43,496][cifar10_resnet50_true][INFO] - Epoch 28/50 | Train Loss: 0.7209 | Train Top1: 75.47% | Val Top1: 67.84% | Val Top5: 96.64%
+[2026-01-30 02:48:15,457][cifar10_resnet50_true][INFO] - Epoch 29/50 | Train Loss: 0.7515 | Train Top1: 74.46% | Val Top1: 71.64% | Val Top5: 96.92%
+[2026-01-30 02:48:47,366][cifar10_resnet50_true][INFO] - Epoch 30/50 | Train Loss: 0.7235 | Train Top1: 75.72% | Val Top1: 65.56% | Val Top5: 96.32%
+[2026-01-30 02:49:19,307][cifar10_resnet50_true][INFO] - Epoch 31/50 | Train Loss: 0.7228 | Train Top1: 75.32% | Val Top1: 66.78% | Val Top5: 95.86%
+[2026-01-30 02:49:51,272][cifar10_resnet50_true][INFO] - Epoch 32/50 | Train Loss: 0.7217 | Train Top1: 75.62% | Val Top1: 70.60% | Val Top5: 97.48%
+[2026-01-30 02:50:23,246][cifar10_resnet50_true][INFO] - Epoch 33/50 | Train Loss: 0.7227 | Train Top1: 75.58% | Val Top1: 74.16% | Val Top5: 98.06%
+[2026-01-30 02:50:24,161][cifar10_resnet50_true][INFO] -    >>> Best model saved (Top1: 74.16%)
+[2026-01-30 02:50:55,519][cifar10_resnet50_true][INFO] - Epoch 34/50 | Train Loss: 0.7199 | Train Top1: 75.55% | Val Top1: 69.50% | Val Top5: 96.14%
+[2026-01-30 02:51:27,461][cifar10_resnet50_true][INFO] - Epoch 35/50 | Train Loss: 0.7244 | Train Top1: 75.54% | Val Top1: 70.14% | Val Top5: 96.86%
+[2026-01-30 02:51:59,293][cifar10_resnet50_true][INFO] - Epoch 36/50 | Train Loss: 0.7145 | Train Top1: 75.59% | Val Top1: 70.82% | Val Top5: 97.12%
+[2026-01-30 02:52:31,142][cifar10_resnet50_true][INFO] - Epoch 37/50 | Train Loss: 0.7242 | Train Top1: 75.43% | Val Top1: 73.34% | Val Top5: 97.96%
+[2026-01-30 02:53:02,863][cifar10_resnet50_true][INFO] - Epoch 38/50 | Train Loss: 0.7086 | Train Top1: 76.05% | Val Top1: 68.64% | Val Top5: 96.30%
+[2026-01-30 02:53:34,710][cifar10_resnet50_true][INFO] - Epoch 39/50 | Train Loss: 0.7083 | Train Top1: 76.04% | Val Top1: 70.22% | Val Top5: 97.46%
+[2026-01-30 02:54:06,475][cifar10_resnet50_true][INFO] - Epoch 40/50 | Train Loss: 0.7213 | Train Top1: 75.63% | Val Top1: 69.16% | Val Top5: 96.96%
+[2026-01-30 02:54:38,428][cifar10_resnet50_true][INFO] - Epoch 41/50 | Train Loss: 0.7067 | Train Top1: 76.08% | Val Top1: 69.18% | Val Top5: 96.90%
+[2026-01-30 02:55:10,226][cifar10_resnet50_true][INFO] - Epoch 42/50 | Train Loss: 0.7112 | Train Top1: 76.06% | Val Top1: 67.46% | Val Top5: 95.48%
+[2026-01-30 02:55:41,973][cifar10_resnet50_true][INFO] - Epoch 43/50 | Train Loss: 0.7140 | Train Top1: 75.78% | Val Top1: 69.36% | Val Top5: 97.08%
+[2026-01-30 02:56:13,848][cifar10_resnet50_true][INFO] - Epoch 44/50 | Train Loss: 0.7023 | Train Top1: 76.11% | Val Top1: 69.28% | Val Top5: 96.84%
+[2026-01-30 02:56:45,507][cifar10_resnet50_true][INFO] - Epoch 45/50 | Train Loss: 0.7102 | Train Top1: 75.94% | Val Top1: 69.02% | Val Top5: 96.84%
+[2026-01-30 02:57:17,473][cifar10_resnet50_true][INFO] - Epoch 46/50 | Train Loss: 0.7110 | Train Top1: 75.98% | Val Top1: 66.60% | Val Top5: 96.42%
+[2026-01-30 02:57:49,206][cifar10_resnet50_true][INFO] - Epoch 47/50 | Train Loss: 0.7017 | Train Top1: 76.23% | Val Top1: 69.10% | Val Top5: 96.58%
+[2026-01-30 02:58:21,024][cifar10_resnet50_true][INFO] - Epoch 48/50 | Train Loss: 0.7026 | Train Top1: 76.36% | Val Top1: 71.40% | Val Top5: 96.94%
+[2026-01-30 02:58:52,904][cifar10_resnet50_true][INFO] - Epoch 49/50 | Train Loss: 0.7094 | Train Top1: 75.93% | Val Top1: 71.74% | Val Top5: 97.16%
+[2026-01-30 02:59:24,745][cifar10_resnet50_true][INFO] - Epoch 50/50 | Train Loss: 0.7008 | Train Top1: 76.45% | Val Top1: 68.46% | Val Top5: 97.16%
+[2026-01-30 02:59:24,746][cifar10_resnet50_true][INFO] - --- Training Finished. Running Final Evaluation with Best Model ---
+[2026-01-30 02:59:26,536][cifar10_resnet50_true][INFO] - Final Result -> Loss: 0.8164 | Top-1: 72.94% | Top-5: 97.72%

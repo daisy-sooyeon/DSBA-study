@@ -1,0 +1,2 @@
+- model=resnet50_pretrained
+- dataset=cifar10

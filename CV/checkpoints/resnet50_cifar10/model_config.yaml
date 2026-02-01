@@ -1,12 +1,16 @@
-model_name: "resnet50"
-num_classes: 10        # Dataset에 맞게 변경 (CIFAR10이면 10)
-pretrained: False       # [핵심] Scratch
+# @package _global_
 
-# Scratch 학습용 설정
-batch_size: 64
-epochs: 50
-learning_rate: 0.1      # 큰 LR
-weight_decay: 5e-4
-optimizer: "sgd"
-momentum: 0.9
-device: "cuda"
+model:
+  name: resnet50
+  num_classes: 10
+  pretrained: false
+  image_size: 32
+
+train:
+  epochs: 50
+  batch_size: 64
+  learning_rate: 0.1
+  weight_decay: 5e-4
+  optimizer: sgd
+  momentum: 0.9
+  device: cuda

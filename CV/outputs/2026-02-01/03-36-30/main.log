@@ -1,0 +1,43 @@
+[2026-02-01 03:36:32,678][cifar10_vit_small][INFO] - --- Experiment: cifar10 + vit_small_patch16_224 ---
+[2026-02-01 03:36:32,682][cifar10_vit_small][INFO] - Config:
+seed: 42
+output_dir: ./outputs
+train:
+  epochs: 50
+  batch_size: 64
+  learning_rate: 0.0001
+  weight_decay: 0.05
+  optimizer: adamw
+  momentum: 0.9
+  device: cuda
+  log_dir: ./logs
+  data_root: ./data/CIFAR-10-C
+data:
+  num_workers: 4
+  batch_size: 64
+eval:
+  batch_size: 256
+  device: cuda
+robustness:
+  data_root: ./data/CIFAR-10-C
+  batch_size: 256
+  device: cuda
+background:
+  data_root: ./data/ImageNet9/bg_challenge
+  epochs: 5
+  batch_size: 64
+  learning_rate: 0.0001
+  device: cuda
+model:
+  name: vit_small_patch16_224
+  num_classes: 200
+  pretrained: false
+  image_size: 224
+  cfg_name: vit_small
+dataset:
+  name: cifar10
+  path: /workspace/cv/data/cifar10
+  num_classes: 10
+  image_size: 32
+
+[2026-02-01 03:36:34,346][cifar10_vit_small][INFO] - Optimizer: AdamW (lr=0.0001)

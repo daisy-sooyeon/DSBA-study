@@ -1,0 +1,79 @@
+[2026-01-30 14:28:23,615][cifar10_vit_small_pretrained][INFO] - --- Experiment: cifar10 + vit_small_patch16_224 ---
+[2026-01-30 14:28:23,618][cifar10_vit_small_pretrained][INFO] - Config:
+seed: 42
+output_dir: ./outputs
+train:
+  epochs: 20
+  batch_size: 64
+  learning_rate: 1.0e-05
+  weight_decay: 0.0001
+  optimizer: adamw
+  momentum: 0.9
+  device: cuda
+  log_dir: ./logs
+data:
+  num_workers: 4
+  batch_size: 64
+eval:
+  batch_size: 256
+  device: cuda
+robustness:
+  data_root: ./data/CIFAR-10-C
+  batch_size: 256
+  device: cuda
+background:
+  data_root: ./data/ImageNet9
+  epochs: 5
+  batch_size: 64
+  learning_rate: 0.0001
+  device: cuda
+model:
+  name: vit_small_patch16_224
+  num_classes: 10
+  pretrained: true
+  image_size: 224
+  cfg_name: vit_small_pretrained
+dataset:
+  name: cifar10
+  path: /workspace/cv/data/cifar10
+  num_classes: 10
+  image_size: 32
+
+[2026-01-30 14:28:25,200][timm.models._builder][INFO] - Loading pretrained weights from Hugging Face hub (timm/vit_small_patch16_224.augreg_in21k_ft_in1k)
+[2026-01-30 14:28:25,454][httpx][INFO] - HTTP Request: HEAD https://huggingface.co/timm/vit_small_patch16_224.augreg_in21k_ft_in1k/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+[2026-01-30 14:28:25,455][huggingface_hub.utils._http][WARNING] - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[2026-01-30 14:28:25,457][timm.models._hub][INFO] - [timm/vit_small_patch16_224.augreg_in21k_ft_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+[2026-01-30 14:28:25,477][timm.models._builder][INFO] - Missing keys (head.weight, head.bias) discovered while loading pretrained weights. This is expected if model is being adapted.
+[2026-01-30 14:28:25,614][cifar10_vit_small_pretrained][INFO] - Optimizer: AdamW (lr=1e-05)
+[2026-01-30 14:34:01,098][cifar10_vit_small_pretrained][INFO] - Epoch 1/20 | Train Loss: 0.2983 | Train Top1: 91.45% | Val Top1: 98.06% | Val Top5: 100.00%
+[2026-01-30 14:34:01,886][cifar10_vit_small_pretrained][INFO] -    >>> Best model saved (Top1: 98.06%)
+[2026-01-30 14:39:37,222][cifar10_vit_small_pretrained][INFO] - Epoch 2/20 | Train Loss: 0.0362 | Train Top1: 99.02% | Val Top1: 98.22% | Val Top5: 100.00%
+[2026-01-30 14:39:37,859][cifar10_vit_small_pretrained][INFO] -    >>> Best model saved (Top1: 98.22%)
+[2026-01-30 14:45:13,061][cifar10_vit_small_pretrained][INFO] - Epoch 3/20 | Train Loss: 0.0107 | Train Top1: 99.81% | Val Top1: 98.28% | Val Top5: 99.98%
+[2026-01-30 14:45:13,683][cifar10_vit_small_pretrained][INFO] -    >>> Best model saved (Top1: 98.28%)
+[2026-01-30 14:50:48,337][cifar10_vit_small_pretrained][INFO] - Epoch 4/20 | Train Loss: 0.0040 | Train Top1: 99.93% | Val Top1: 98.14% | Val Top5: 100.00%
+[2026-01-30 14:56:23,433][cifar10_vit_small_pretrained][INFO] - Epoch 5/20 | Train Loss: 0.0030 | Train Top1: 99.96% | Val Top1: 98.42% | Val Top5: 100.00%
+[2026-01-30 14:56:24,021][cifar10_vit_small_pretrained][INFO] -    >>> Best model saved (Top1: 98.42%)
+[2026-01-30 15:01:58,490][cifar10_vit_small_pretrained][INFO] - Epoch 6/20 | Train Loss: 0.0056 | Train Top1: 99.83% | Val Top1: 98.20% | Val Top5: 99.98%
+[2026-01-30 15:07:33,691][cifar10_vit_small_pretrained][INFO] - Epoch 7/20 | Train Loss: 0.0069 | Train Top1: 99.80% | Val Top1: 98.42% | Val Top5: 100.00%
+[2026-01-30 15:13:08,606][cifar10_vit_small_pretrained][INFO] - Epoch 8/20 | Train Loss: 0.0025 | Train Top1: 99.94% | Val Top1: 98.46% | Val Top5: 100.00%
+[2026-01-30 15:13:09,169][cifar10_vit_small_pretrained][INFO] -    >>> Best model saved (Top1: 98.46%)
+[2026-01-30 15:18:44,627][cifar10_vit_small_pretrained][INFO] - Epoch 9/20 | Train Loss: 0.0022 | Train Top1: 99.95% | Val Top1: 98.46% | Val Top5: 99.98%
+[2026-01-30 15:24:18,233][cifar10_vit_small_pretrained][INFO] - Epoch 10/20 | Train Loss: 0.0010 | Train Top1: 99.97% | Val Top1: 98.36% | Val Top5: 100.00%
+[2026-01-30 15:29:53,898][cifar10_vit_small_pretrained][INFO] - Epoch 11/20 | Train Loss: 0.0038 | Train Top1: 99.88% | Val Top1: 98.08% | Val Top5: 99.96%
+[2026-01-30 15:35:28,591][cifar10_vit_small_pretrained][INFO] - Epoch 12/20 | Train Loss: 0.0055 | Train Top1: 99.82% | Val Top1: 98.36% | Val Top5: 100.00%
+[2026-01-30 15:41:03,344][cifar10_vit_small_pretrained][INFO] - Epoch 13/20 | Train Loss: 0.0011 | Train Top1: 99.96% | Val Top1: 98.58% | Val Top5: 100.00%
+[2026-01-30 15:41:04,093][cifar10_vit_small_pretrained][INFO] -    >>> Best model saved (Top1: 98.58%)
+[2026-01-30 15:46:38,051][cifar10_vit_small_pretrained][INFO] - Epoch 14/20 | Train Loss: 0.0002 | Train Top1: 100.00% | Val Top1: 98.50% | Val Top5: 100.00%
+[2026-01-30 15:52:13,608][cifar10_vit_small_pretrained][INFO] - Epoch 15/20 | Train Loss: 0.0001 | Train Top1: 100.00% | Val Top1: 98.66% | Val Top5: 100.00%
+[2026-01-30 15:52:14,205][cifar10_vit_small_pretrained][INFO] -    >>> Best model saved (Top1: 98.66%)
+[2026-01-30 15:57:49,267][cifar10_vit_small_pretrained][INFO] - Epoch 16/20 | Train Loss: 0.0001 | Train Top1: 100.00% | Val Top1: 98.68% | Val Top5: 100.00%
+[2026-01-30 15:57:49,859][cifar10_vit_small_pretrained][INFO] -    >>> Best model saved (Top1: 98.68%)
+[2026-01-30 16:03:25,117][cifar10_vit_small_pretrained][INFO] - Epoch 17/20 | Train Loss: 0.0000 | Train Top1: 100.00% | Val Top1: 98.72% | Val Top5: 100.00%
+[2026-01-30 16:03:25,714][cifar10_vit_small_pretrained][INFO] -    >>> Best model saved (Top1: 98.72%)
+[2026-01-30 16:08:59,395][cifar10_vit_small_pretrained][INFO] - Epoch 18/20 | Train Loss: 0.0000 | Train Top1: 100.00% | Val Top1: 98.76% | Val Top5: 100.00%
+[2026-01-30 16:08:59,998][cifar10_vit_small_pretrained][INFO] -    >>> Best model saved (Top1: 98.76%)
+[2026-01-30 16:14:35,240][cifar10_vit_small_pretrained][INFO] - Epoch 19/20 | Train Loss: 0.0000 | Train Top1: 100.00% | Val Top1: 98.76% | Val Top5: 99.98%
+[2026-01-30 16:20:09,369][cifar10_vit_small_pretrained][INFO] - Epoch 20/20 | Train Loss: 0.0000 | Train Top1: 100.00% | Val Top1: 98.74% | Val Top5: 99.98%
+[2026-01-30 16:20:09,370][cifar10_vit_small_pretrained][INFO] - --- Training Finished. Running Final Evaluation with Best Model ---
+[2026-01-30 16:20:31,396][cifar10_vit_small_pretrained][INFO] - Final Result -> Loss: 0.0981 | Top-1: 98.23% | Top-5: 99.94%

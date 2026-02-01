@@ -1,0 +1,18 @@
+# @package _global_
+
+model:
+  name: resnet50
+  cfg_name: resnet50_pretrained
+  num_classes: 10
+  pretrained: true
+  image_size: 32
+
+train:
+  epochs: 20
+  batch_size: 64
+  learning_rate: 0.01
+  weight_decay: 5e-4
+  optimizer: sgd
+  momentum: 0.9
+  device: cuda
+  data_root: './data/CIFAR-10-C'

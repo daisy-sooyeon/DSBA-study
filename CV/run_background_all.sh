@@ -13,10 +13,16 @@ echo "----------------------------------------------------------------"
 echo "🚀 [1/2] Starting Experiment: ResNet50 (CNN)"
 echo "----------------------------------------------------------------"
 
-python eval_background_robustness.py \
-    --config ./configs/models/resnet50_pretrained_in9.yaml \
-    --data_root "$DATA_ROOT" \
-    --epochs $EPOCHS
+CUDA_VISIBLE_DEVICES=0 python -c "
+from src.eval_background_robustness import main
+from hydra import initialize_config_dir, compose
+import os
+
+config_dir = os.path.abspath('./configs')
+with initialize_config_dir(version_base=None, config_dir=config_dir):
+    cfg = compose(config_name='config', overrides=['model=resnet50_pretrained_in9', 'background.epochs=$EPOCHS'])
+    main(cfg)
+"
 
 echo "✅ ResNet50 Experiment Completed!"
 echo ""
@@ -28,13 +34,16 @@ echo "----------------------------------------------------------------"
 echo "🚀 [2/2] Starting Experiment: ViT-Small (Transformer)"
 echo "----------------------------------------------------------------"
 
-# timm 설치 확인
-pip install timm --quiet
+CUDA_VISIBLE_DEVICES=0 python -c "
+from src.eval_background_robustness import main
+from hydra import initialize_config_dir, compose
+import os
 
-python eval_background_robustness.py \
-    --config ./configs/models/vit_small_pretrained_in9.yaml \
-    --data_root "$DATA_ROOT" \
-    --epochs $EPOCHS
+config_dir = os.path.abspath('./configs')
+with initialize_config_dir(version_base=None, config_dir=config_dir):
+    cfg = compose(config_name='config', overrides=['model=vit_small_pretrained_in9', 'background.epochs=$EPOCHS'])
+    main(cfg)
+"
 
 echo "✅ ViT-Small Experiment Completed!"
 echo ""
