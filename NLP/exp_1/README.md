@@ -59,21 +59,21 @@ exp_1/
 ├── README.md
 ├── requirements.txt
 ├── configs/
-│   ├── config.yaml          # 메인 설정 파일
+│   ├── config.yaml          
 │   └── model/
 │       ├── bert.yaml        # BERT 모델 설정
 │       └── modernbert.yaml  # ModernBERT 모델 설정
 ├── src/
 │   ├── main.py              # 메인 훈련 스크립트
-│   ├── analyze_errors.py     # t-SNE 경계 오분류 / attention 분석 스크립트
-│   ├── model.py             # EncoderForClassification 모델 정의
+│   ├── analyze_errors.py    # t-SNE 경계 오분류 / attention 분석 스크립트
+│   ├── model.py             
 │   ├── data.py              # 데이터 로딩 및 전처리
-│   └── utils.py             # 유틸리티 함수 (로거, 시드 설정 등)
+│   └── utils.py             
 ├── scripts/
 │   ├── run_all_models.sh    # 모든 모델 자동 실행 스크립트
-│   └── analyze_errors.sh     # 오분류 역추적/attention 비교 실행 스크립트
-├── analysis_outputs/         # 분석 결과 저장 (gitignore)
-├── logs/                    # 로그 파일 저장 디렉터리
+│   └── analyze_errors.sh    # 오분류 역추적/attention 비교 실행 스크립트
+├── analysis_outputs/        # 분석 결과 저장
+├── logs/                    
 ├── checkpoints/             # 모델 체크포인트 저장 디렉터리
 ├── outputs/                 # Hydra 출력 파일 저장 디렉터리
 └── wandb/                   # WandB 실험 추적 파일 저장 디렉터리
@@ -201,10 +201,10 @@ Saved files include:
 
 ### Result
 
-| model | val_acc | val_acc@epoch | test_loss | test_acc |
-| :--- | :---: | :---: | :---: | :---: |
-| bert-base-uncased | 0.2902 | 0.8810@2 | 0.2856 | 0.8816 |
-| modernbert-base | 0.2342 | 0.9092@2 | 0.2284 | **0.9116** |
+| model | val_acc@epoch | test_loss | test_acc |
+| :--- | :---: | :---: | :---: |
+| bert-base-uncased | 0.8832@3 | 0.3428 | 0.8842 |
+| modernbert-base | 0.9104@1 | 0.2096 | **0.9154** |
 
 > Test는 validation accuracy 기준 best epoch의 checkpoint를 로드하여 진행함 (checkpoint는 매 epoch 저장)
 
@@ -213,24 +213,23 @@ Saved files include:
 - **t-SNE 비교**
 
 <div align="center">
-
 <table>
 <tr>
 <td align="center" width="50%">
 <strong>Column 1</strong><br><br>
-<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/39713672-0a38-486d-a6e3-b27628224a15" /><br><br>
-<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/a5a467ae-1a98-4625-b717-01c6b6ea670b" /><br><br>
-<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/5d53df7b-f743-42d8-955c-13924fe36742" /><br><br>
-<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/3239d646-1fe8-4dc9-b577-34b63397c52d" /><br><br>
-<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/227d3e40-b2fe-45b4-b58d-4c699cf94462" />
+<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/51360741-9bbb-491b-881b-189e0b9f9a46" /><br><br>
+<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/f3ec0fdb-4579-461f-af6a-c4e9f0c80afc" /><br><br>
+<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/459280b3-eb2a-45cb-9cd7-bac072a365bf" /><br><br>
+<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/1597e5e7-1be0-4f23-81ed-0e489cdd260d" /><br><br>
+<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/4dfa61a9-ab80-49e8-b4a4-8c56914466dd" />
 </td>
 <td align="center" width="50%">
 <strong>Column 2</strong><br><br>
-<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/3db1fa9c-1678-4e4d-b238-c42e8ba21097" /><br><br>
-<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/b44ff745-d84a-4de2-89ec-1cf01fa43982" /><br><br>
-<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/4ba4e93d-24cc-46db-a0b9-b8002753f275" /><br><br>
-<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/8a1b8fac-edf1-497f-a55c-4feb52426370" /><br><br>
-<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/58aee2cb-6ab7-426e-be51-818051fc92c8" />
+<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/ca20f72a-339f-4179-9ce2-1bb316c18e06" /><br><br>
+<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/f1868382-31f6-4e2b-8480-5a9c91db9825" /><br><br>
+<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/c5ce47ec-f382-45cf-b039-cba9dda8c5d0" /><br><br>
+<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/c43f443b-a3a5-4b27-ac34-6decdddd57bd" /><br><br>
+<img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/79fb4a37-4e7c-4ed8-8409-7e0205bb83a1" />
 </td>
 </tr>
 </table>
@@ -242,7 +241,7 @@ Saved files include:
 - **Attention Map 확인**
 
 <div align="center">
-  <img width="900" alt="Attention Map" src="https://github.com/user-attachments/assets/91da1a5f-9d47-4463-a8e2-e79e2a3a786a" />
+  <img width="900" alt="Attention Map" src="https://github.com/user-attachments/assets/7f7e1857-b658-412a-b070-2de7c5b04da0" />
 </div>
 
 BERT는 모든 토큰에 낮은 가중치를 골고루 배치하고 있어 전체적인 맥락(평균적인 특징)을 보고 있는 상황이고, ModernBERT는 특정 단어에 집중하고 주변 단어과의 강한 관계를 유지함으로써 중요한 정보에만 집중하는 상황이라고 이해할 수 있다. 
