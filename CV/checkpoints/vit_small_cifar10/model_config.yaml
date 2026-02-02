@@ -14,3 +14,4 @@ train:
   weight_decay: 0.05
   optimizer: adamw
   device: cuda
+  data_root: './data/CIFAR-10-C'

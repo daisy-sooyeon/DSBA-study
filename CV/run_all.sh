@@ -6,7 +6,7 @@ set -e
 # ==========================================
 # 1. 실험할 모델과 데이터셋 설정
 # ==========================================
-MODELS=("vit_small") 
+MODELS=("resnet50" "resnet50_pretrained" "vit_small" "vit_small_pretrained") 
 DATASETS=("cifar10") 
 GPU_ID=0  
 
