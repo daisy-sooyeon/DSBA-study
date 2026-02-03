@@ -252,7 +252,7 @@ Saved files include:
 - **Attention Map 확인**
 
 <div align="center">
-  <img width="900" alt="Attention Map" src="Image" src="https://github.com/user-attachments/assets/01aa4e0d-0470-4550-a179-8d1e70fa367c" />
+  <img width="900" alt="Attention Map" src="https://github.com/user-attachments/assets/38db54eb-1b2b-4284-8bf8-8f53878b6405" />
 </div>
 
 BERT는 특정 토큰에 집중하여 보고 있는 상황이라 문맥 전체의 의미를 특정 지점으로 응축하려는 경향이 있고, ModernBERT는 특정 단어에 집중하면서도 자기 자신 및 주변 단어과의 강한 관계를 유지함으로써 문장 전체에 대해 다각적인 정보에 집중하는 상황이라고 이해할 수 있다. 
