@@ -188,12 +188,12 @@ def main(configs : omegaconf.DictConfig) :
         
         # Save checkpoint for every epoch
         checkpoint_path = save_checkpoint(
-            model, 
-            epoch+1, 
-            {'valid_loss': avg_valid_loss, 'valid_accuracy': avg_valid_accuracy},
-            checkpoint_dir,
-            accuracy=avg_valid_accuracy
-        )
+                model, 
+                epoch+1, 
+                {'valid_loss': avg_valid_loss, 'valid_accuracy': avg_valid_accuracy},
+                checkpoint_dir,
+                accuracy=avg_valid_accuracy
+            )
         print(f"Checkpoint saved: {checkpoint_path}")
         logger.info(f"Checkpoint saved: {checkpoint_path}")
         

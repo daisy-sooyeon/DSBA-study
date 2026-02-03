@@ -40,10 +40,10 @@ class EncoderForClassification(nn.Module):
         # Load pretrained model
         if 'modernbert' in self.model_name.lower():
             # ModernBERT doesn't support add_pooling_layer argument
-            self.encoder = AutoModel.from_pretrained(self.model_name)
+            self.encoder = AutoModel.from_pretrained(self.model_name, attn_implementation="eager")
         else:
             # For BERT and other models
-            self.encoder = AutoModel.from_pretrained(self.model_name, add_pooling_layer=False)
+            self.encoder = AutoModel.from_pretrained(self.model_name, add_pooling_layer=False, attn_implementation="eager")
         
         # Classification head
         self.classifier = nn.Linear(self.hidden_size, self.num_labels)
@@ -53,7 +53,8 @@ class EncoderForClassification(nn.Module):
                 input_ids : torch.Tensor, 
                 attention_mask : torch.Tensor, 
                 token_type_ids : torch.Tensor = None,
-                label : torch.Tensor = None) -> Dict[str, torch.Tensor]:
+                label : torch.Tensor = None,
+                **kwargs) -> Dict[str, torch.Tensor]:
         """
         Forward pass for classification
         
@@ -62,6 +63,7 @@ class EncoderForClassification(nn.Module):
             attention_mask : (batch_size, max_seq_len)
             token_type_ids : (batch_size, max_seq_len) # only for BERT
             label : (batch_size)
+            **kwargs : Additional arguments to pass to encoder (e.g., output_attentions=True)
         
         Outputs :
             outputs : dict containing {
@@ -79,22 +81,25 @@ class EncoderForClassification(nn.Module):
         if token_type_ids is not None:
             model_input['token_type_ids'] = token_type_ids
         
+        # Pass kwargs (e.g., output_attentions=True) to encoder
+        model_input.update(kwargs)
+        
         # Get encoder output
         encoder_output = self.encoder(**model_input)
         
-        # Pool the output (masked mean pooling over tokens)
-        last_hidden_state = encoder_output['last_hidden_state']  # (batch_size, seq_len, hidden_size)
-        pooled_output = masked_mean_pooling(last_hidden_state, attention_mask)  # (batch_size, hidden_size)
+        last_hidden_state = encoder_output['last_hidden_state']
+        pooled_output = masked_mean_pooling(last_hidden_state, attention_mask)
+        logits = self.classifier(pooled_output)
         
-        # Get logits
-        logits = self.classifier(pooled_output)  # (batch_size, num_labels)
+        loss = self.loss_fn(logits, label) if label is not None else None
         
-        # Calculate loss if labels are provided
-        loss = None
-        if label is not None:
-            loss = self.loss_fn(logits, label)
-        
-        return {
+        output_dict = {
             'logits': logits,
-            'loss': loss
+            'loss': loss,
+            'last_hidden_state': last_hidden_state
         }
+        
+        if hasattr(encoder_output, 'attentions'):
+            output_dict['attentions'] = encoder_output.attentions
+            
+        return output_dict
