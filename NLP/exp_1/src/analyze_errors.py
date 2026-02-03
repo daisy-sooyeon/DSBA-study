@@ -110,7 +110,6 @@ def visualize_attention(bert_model, modern_model, bert_tok, modern_tok, text, de
             tokens = tok.convert_ids_to_tokens(inputs['input_ids'][0])
         
         filtered_att, filtered_tokens = get_valid_attention(attentions, tokens)
-        n_tokens = len(filtered_tokens)
 
         step = 3
             
@@ -125,7 +124,6 @@ def visualize_attention(bert_model, modern_model, bert_tok, modern_tok, text, de
         
         axes[i].tick_params(axis='x', rotation=90, labelsize=9)
         axes[i].tick_params(axis='y', rotation=0, labelsize=9)
-        # =======================================
 
     plt.suptitle(f"Attention Comparison on Error Sample (Label Overlap Fixed)", fontsize=20, y=1.02)
     plt.tight_layout()

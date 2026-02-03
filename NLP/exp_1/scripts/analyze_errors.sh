@@ -6,8 +6,8 @@
 cd "$(dirname "$0")/.."
 
 # Default checkpoint paths (adjust if needed)
-BERT_CHECKPOINT="checkpoints/bert_base_uncased/epoch_2_acc_0.8810.pt"
-MODERNBERT_CHECKPOINT="checkpoints/answerdotai/modernbert_base/epoch_2_acc_0.9092.pt"
+BERT_CHECKPOINT="checkpoints/bert_base_uncased/epoch_3_acc_0.8832.pt"
+MODERNBERT_CHECKPOINT="checkpoints/answerdotai/modernbert_base/epoch_1_acc_0.9104.pt"
 
 # Parse arguments
 MODE="both"  # tsne, attention, or both
