@@ -142,10 +142,7 @@ bash scripts/run_all_models.sh
 
 #### Training Details
 - Loss Function: Cross Entropy Loss
-- Optimizer: Adam
-- Learning Rate: 5e-5 (constant)
-- Seed: 42 (재현성을 위해 고정)
-- Device: CUDA (GPU 사용)
+- Seed: 42
 
 #### Evaluation Metrics
 
@@ -212,6 +209,20 @@ Saved files include:
 
 - **t-SNE 비교**
 
+#### Run all training jobs
+```bash
+cd /workspace/NLP/exp_1
+bash scripts/analyze_errors.sh
+```
+
+#### Output
+
+Saved files include:
+
+| File                        | Description                         |
+|-----------------------------|-------------------------------------|
+| `analysis_outputs/*`        | Error analysis outputs (t-SNE boundary samples, attention logs/images) |
+
 <div align="center">
 <table>
 <tr>
@@ -246,7 +257,7 @@ Saved files include:
 
 BERT는 모든 토큰에 낮은 가중치를 골고루 배치하고 있어 전체적인 맥락(평균적인 특징)을 보고 있는 상황이고, ModernBERT는 특정 단어에 집중하고 주변 단어과의 강한 관계를 유지함으로써 중요한 정보에만 집중하는 상황이라고 이해할 수 있다. 
 
-> 실제로 ModernBERT는 Rotary Positional Embeddings (RoPE)를 통해 상대적인 위치 정보를 반영하고, Local-Global Alternating Attention이 가능하며, 상대적으로 많은 token을 한 번에 볼 수 있기 때문에 유리한 위치에 있다.
+> 실제로 ModernBERT는 Rotary Positional Embeddings (RoPE)를 통해 상대적인 위치 정보를 반영하고, Local-Global Alternating Attention이 가능하며, BERT에 비해 많은 token을 한 번에 볼 수 있기 때문에 유리한 위치에 있다.
 
 ---
 
@@ -258,4 +269,4 @@ BERT는 모든 토큰에 낮은 가중치를 골고루 배치하고 있어 전�
 
 2. Pooling 시 padded token 포함 여부
 
-현재 분류 과제를 수행하기 위해 mean pooling을 하고 있는데, 이때 paddding 값들을 평균 계산에 포함시키면 문장이 짧을 경우 padding 값들이 결과에 영향을 줄 수 있다. 따라서 masked mean pooling을 사용하여 padding을 제외한 pooling을 진행하여야 한다. 
+현재 분류 과제를 수행하기 위해 mean pooling을 하고 있는데, 이때 padding 값들을 평균 계산에 포함시키면 문장이 짧을 경우 padding 값들이 결과에 영향을 줄 수 있다. 따라서 masked mean pooling을 사용하여 padding을 제외한 pooling을 진행하여야 한다. 
