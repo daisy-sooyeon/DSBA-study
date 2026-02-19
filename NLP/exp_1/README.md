@@ -194,7 +194,6 @@ Saved files include:
 | `checkpoints/{model_name}/epoch_*_acc_*.pt` | Checkpoint saved every epoch (filename includes val acc) |
 | `outputs/main.log` | Hydra output log file        |
 | `wandb/run-*/`              | WandB experiment tracking files     |
-| `analysis_outputs/*`        | Error analysis outputs (t-SNE boundary samples, attention logs/images) |
 
 ### Result
 
@@ -209,7 +208,7 @@ Saved files include:
 
 - **t-SNE 비교**
 
-#### Run all training jobs
+#### Plot Accuracy Map
 ```bash
 cd /workspace/NLP/exp_1
 bash scripts/analyze_errors.sh
@@ -227,7 +226,7 @@ Saved files include:
 <table>
 <tr>
 <td align="center" width="50%">
-<strong>Column 1</strong><br><br>
+<strong>bert-base-uncased</strong><br><br>
 <img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/51360741-9bbb-491b-881b-189e0b9f9a46" /><br><br>
 <img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/f3ec0fdb-4579-461f-af6a-c4e9f0c80afc" /><br><br>
 <img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/459280b3-eb2a-45cb-9cd7-bac072a365bf" /><br><br>
@@ -235,7 +234,7 @@ Saved files include:
 <img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/4dfa61a9-ab80-49e8-b4a4-8c56914466dd" />
 </td>
 <td align="center" width="50%">
-<strong>Column 2</strong><br><br>
+<strong>modernbert</strong><br><br>
 <img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/ca20f72a-339f-4179-9ce2-1bb316c18e06" /><br><br>
 <img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/f1868382-31f6-4e2b-8480-5a9c91db9825" /><br><br>
 <img width="600" height="600" alt="Image" src="https://github.com/user-attachments/assets/c5ce47ec-f382-45cf-b039-cba9dda8c5d0" /><br><br>

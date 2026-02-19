@@ -1,0 +1,15 @@
+# @package _global_
+
+model:
+  name: "bert-base-uncased"
+  hidden_size: 768
+  num_labels: 2
+train:
+  epochs: 5
+  batch_size: 16
+  learning_rate: 5e-5
+  optimizer: "adam"
+  scheduler: "constant"
+  warmup_steps: 0
+  seed: 42
+  device: "cuda"
