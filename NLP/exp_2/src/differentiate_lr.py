@@ -148,7 +148,7 @@ def run_training(configs: omegaconf.DictConfig, target_batch_size: int, experime
     )
     
     model_name_clean = configs.model.name.lower().replace('-', '_').replace('.', '_')
-    checkpoint_dir = os.path.join(exp_dir, configs.logging.checkpoint_dir, model_name_clean, run_name)
+    checkpoint_dir = os.path.join(exp_dir, configs.logging.checkpoint_dir, 'lr', model_name_clean, run_name)
 
     # Training Loop
     global_step = 0

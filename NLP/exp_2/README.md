@@ -322,18 +322,18 @@ epoch 수를 고정하고 있는 현재 상황에서는 batch size에 따라 가
 | model | Target BS | val_acc@epoch | test_acc |
 | :--- | :---: | :---: | :---: |
 | bert-base-uncased | 64 | 0.9007@1 | **0.9013** |
-| bert-base-uncased | 256 | 0.9041@2 | 0.9005 |
-| bert-base-uncased | 1024 | 0.8971@3 | 0.8963 |
+| bert-base-uncased | 256 | 0.8935@2 | 0.8951 |
+| bert-base-uncased | 1024 | 0.8903@4 | 0.8901 |
 | modernbert-base | 64 | 0.9170@1 | **0.9204** |
-| modernbert-base | 256 | 0.9138@4 | 0.9092 |
-| modernbert-base | 1024 | 0.9120@2 | 0.9146 |
+| modernbert-base | 256 | 0.9031@3 | 0.917 |
+| modernbert-base | 1024 | 0.9152@2 | 0.9124 |
 
-> Test는 validation accuracy 기준 best epoch의 checkpoint를 로드하여 진행함 (checkpoint는 매 epoch 저장)
+여전히 batch size가 작을수록 좋은 일반화 성능을 보임을 확인할 수 있다.
 
 <div align="center">
-  <img width="900" alt="BERT Train Accuracy (Step)" src="https://github.com/user-attachments/assets/25ef28f6-af7e-462f-bd61-a48863d2ad46" />
+  <img width="900" alt="BERT Train Accuracy (Step)" src="https://github.com/user-attachments/assets/5a945506-22c5-45d5-bc52-91a448356976" />
 </div>
 
 <div align="center">
-  <img width="900" alt="ModernBERT Train Accuracy (Step)" src="https://github.com/user-attachments/assets/38db54eb-1b2b-4284-8bf8-8f53878b6405" />
+  <img width="900" alt="ModernBERT Train Accuracy (Step)" src="https://github.com/user-attachments/assets/0b56e506-d876-45ef-8202-2926f91cbed2" />
 </div>
