@@ -121,6 +121,13 @@ huggingface의 accelerate를 사용하고 싶은 경우:
 bash scripts/run_all_models.sh
 ```
 
+batch size에 따라 learning rate를 바꿔가며 학습하고 싶은 경우: 
+
+`scripts/run_all_models.sh`의 `main.py` 부분을 `differentiate_lr.py`로 수정 후
+```bash
+bash scripts/run_all_models.sh
+```
+
 ---
 
 # Training Configuration
@@ -225,11 +232,11 @@ Saved files include:
 > Test는 validation accuracy 기준 best epoch의 checkpoint를 로드하여 진행함 (checkpoint는 매 epoch 저장)
 
 <div align="center">
-  <img width="900" alt="Train Accuracy (Step)" src="https://github.com/user-attachments/assets/38db54eb-1b2b-4284-8bf8-8f53878b6405" />
+  <img width="900" alt="BERT Train Accuracy (Step)" src="https://github.com/user-attachments/assets/25ef28f6-af7e-462f-bd61-a48863d2ad46" />
 </div>
 
 <div align="center">
-  <img width="900" alt="Train Loss (Step)" src="https://github.com/user-attachments/assets/38db54eb-1b2b-4284-8bf8-8f53878b6405" />
+  <img width="900" alt="ModernBERT Train Accuracy (Step)" src="https://github.com/user-attachments/assets/a46fc8d8-7b61-4a4a-a253-5be58abff461" />
 </div>
 
 ### Evaluation
@@ -259,26 +266,26 @@ Saved files include:
 <td align="center" width="50%">
 <strong>bert-base-uncased</strong><br><br>
 
-<img width="600" height="250" alt="BS 64" src="https://github.com/user-attachments/assets/cb6357cd-37af-4e68-abbe-fd06ae708159" /><br>
+<img width="600" alt="BS 64" src="https://github.com/user-attachments/assets/cb6357cd-37af-4e68-abbe-fd06ae708159" /><br>
 <em>Target Batch Size: 64</em><br><br>
 
-<img width="600" height="250" alt="BS 256" src="https://github.com/user-attachments/assets/6e7c3d5b-ea21-4b42-8219-6a2a9e5d4aad" /><br>
+<img width="600" alt="BS 256" src="https://github.com/user-attachments/assets/6e7c3d5b-ea21-4b42-8219-6a2a9e5d4aad" /><br>
 <em>Target Batch Size: 256</em><br><br>
 
-<img width="600" height="250" alt="BS 1024" src="https://github.com/user-attachments/assets/6f2adb42-2596-4926-bf0c-3f9f9ca8236e" /><br>
+<img width="600" alt="BS 1024" src="https://github.com/user-attachments/assets/6f2adb42-2596-4926-bf0c-3f9f9ca8236e" /><br>
 <em>Target Batch Size: 1024</em><br><br>
 
 </td>
 <td align="center" width="50%">
 <strong>modernbert-base</strong><br><br>
 
-<img width="600" height="250" alt="BS 64" src="https://github.com/user-attachments/assets/916e7bc2-dde1-4281-ae2c-9a9f2a4b91ed" /><br>
+<img width="600" alt="BS 64" src="https://github.com/user-attachments/assets/916e7bc2-dde1-4281-ae2c-9a9f2a4b91ed" /><br>
 <em>Target Batch Size: 64</em><br><br>
 
-<img width="600" height="250" alt="BS 256" src="https://github.com/user-attachments/assets/b4326351-9e6a-4194-8036-d8e0905d71bb" /><br>
+<img width="600" alt="BS 256" src="https://github.com/user-attachments/assets/b4326351-9e6a-4194-8036-d8e0905d71bb" /><br>
 <em>Target Batch Size: 256</em><br><br>
 
-<img width="600" height="250" alt="BS 1024" src="https://github.com/user-attachments/assets/50d90c40-8ae6-45b8-8b5e-01a3e8674a8e" /><br>
+<img width="600" alt="BS 1024" src="https://github.com/user-attachments/assets/50d90c40-8ae6-45b8-8b5e-01a3e8674a8e" /><br>
 <em>Target Batch Size: 1024</em><br><br>
 
 </td>
@@ -299,3 +306,34 @@ PyTorch 사용한 버전과 동일 (seed 동일하기 때문)
 - PyTorch: 배치 인덱스(i)를 추적하여 (i + 1) % accumulation_steps == 0 조건을 수동으로 계산해야 한다. 또, 지정된 Target Batch Size를 맞추기 위해 loss를 accumulation_steps로 직접 나누어 주어야 하며, 에폭의 마지막 자투리 배치(Remainder Batch)를 처리하기 위해 or (i + 1) == len(dataloader) 같은 예외 처리 로직이 강제된다.
 
 - Huggingface Accelerate: with accelerator.accumulate(model):라는 Context Manager 블록 하나로 복잡한 수학적 계산과 예외 처리가 모두 대체된다. loss scaling과 더불어 epoch의 마지막에 도달했을 때 남은 자투리 데이터에 대한 가중치 업데이트까지 프레임워크가 자동으로 안전하게 처리한다.
+
+---
+
+### 공정한 비교인가?
+
+epoch 수를 고정하고 있는 현재 상황에서는 batch size에 따라 가중치 업데이트 횟수가 차이나기 때문에 불공정한 비교일 수 있다. 하지만 step 수를 맞춰서 학습을 하게 되면 batch size가 클 때 컴퓨터 자원을 많이 사용하기 때문에 이 또한 공정한 비교라 보기 어렵다. 따라서 epoch 수는 고정하되, learning rate를 크게 하여 큰 배치에서의 한계를 보완한 경우에 대해서 실험을 진행해보았다.
+
+- BS 64 learning rate: 5e-5
+- BS 256 learning rate: 1e-4
+- BS 1024 learning rate: 2e-4
+
+#### Result
+
+| model | Target BS | val_acc@epoch | test_acc |
+| :--- | :---: | :---: | :---: |
+| bert-base-uncased | 64 | 0.9007@1 | **0.9013** |
+| bert-base-uncased | 256 | 0.9041@2 | 0.9005 |
+| bert-base-uncased | 1024 | 0.8971@3 | 0.8963 |
+| modernbert-base | 64 | 0.9170@1 | **0.9204** |
+| modernbert-base | 256 | 0.9138@4 | 0.9092 |
+| modernbert-base | 1024 | 0.9120@2 | 0.9146 |
+
+> Test는 validation accuracy 기준 best epoch의 checkpoint를 로드하여 진행함 (checkpoint는 매 epoch 저장)
+
+<div align="center">
+  <img width="900" alt="BERT Train Accuracy (Step)" src="https://github.com/user-attachments/assets/25ef28f6-af7e-462f-bd61-a48863d2ad46" />
+</div>
+
+<div align="center">
+  <img width="900" alt="ModernBERT Train Accuracy (Step)" src="https://github.com/user-attachments/assets/38db54eb-1b2b-4284-8bf8-8f53878b6405" />
+</div>
