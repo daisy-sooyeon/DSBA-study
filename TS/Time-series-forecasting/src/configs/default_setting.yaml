@@ -1,0 +1,56 @@
+DEFAULT:
+  exp_name: forecasting 
+  seed: 42
+
+DATASET:
+  datadir: ./dataset
+  dataname: ETTh1
+  features: S # S: univariate, M: multivariate, MS: multivariate multi-step
+  scaler: standard
+  batch_size: 32
+  shuffle: true
+  num_workers: 0
+  pin_memory: true
+  drop_last: true
+  seq_len: 96 # 24, 48, 96, 168, 336, 480, 720 / 24, 48, 96, 192, 288, 480, 672
+  label_len: 48 # 위와 동일 but seq_len보다 작아야 함
+  pred_len: 24 # 24시간(1일), 48, 168, 336, 720, 960 / 6h, 12h, 24h, 72h, 168h
+  split_rate: [0.6, 0.2, 0.2]
+  time_embedding: [1, 'h'] # ETTm은 [1, 't']
+  del_feature: null
+
+TRAIN:
+  epoch: 8
+  ckp_metric: 'MSE'
+  eval_epochs: 1
+  log_epochs: 1
+  log_eval_iter: 100
+  early_stopping_count: 3
+  resume: null
+  pre_training: false
+  data_num: 0
+  fine_tuning_method: full
+  grad_accum_steps: 1
+  mixed_precision: 'no'
+  early_stopping_metric: 'MSE' 
+  lradj: 'type1'
+  return_output: false
+  del_pt_file: false
+  wandb: 
+    use: true
+    iter: 50
+    exp_name: experiment1
+    project_name: ts_forecasting
+    entity: daisysooyeon-snu
+LOSS:
+  loss_name: mse
+
+OPTIMIZER:
+  opt_name: adam
+  lr: 0.0001
+  lradj: 'type1'
+  params:
+    weight_decay: 0.0001
+
+RESULT:
+  savedir: './saved_model'

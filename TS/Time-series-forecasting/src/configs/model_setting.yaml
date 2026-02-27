@@ -1,0 +1,24 @@
+DLinear:
+  moving_avg: 25
+  enc_in: 125 
+  dropout: 0.1
+  individual: false
+
+InformerStack:
+  enc_in: 1 # 단변량: 1, 다변량: 7
+  dec_in: 1 # 단변량: 1, 다변량: 7
+  c_out: 1 # 단변량: 1, 다변량: 7
+  d_model: 512
+  embed: 'timeF' # timeF, fixed, learned
+  freq: 'h' # ETTm은 't'
+  n_heads: 8
+  e_layers: [3, 1] # stack 사용하려면 [3, 2, 1] / 2
+  d_layers: 2
+  d_ff: 2048
+  dropout: 0.05
+  attn: 'prob'
+  factor: 5
+  output_attention: false
+  distil: true
+  mix: true
+  activation: 'gelu'

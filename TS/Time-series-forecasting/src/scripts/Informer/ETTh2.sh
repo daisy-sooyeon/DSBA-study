@@ -1,0 +1,204 @@
+#!/bin/bash
+
+seq_len=96
+label_len=48
+data_path=./dataset/ETTh2.csv
+data_name=ETTh2
+model_name=InformerStack
+batch_size=32
+
+# 단변량
+# 1. pred_len = 24
+accelerate launch --num_processes 1 main.py \
+    --model_name $model_name \
+    --default_cfg ./configs/default_setting.yaml \
+    --model_cfg ./configs/model_setting.yaml \
+    DATASET.seq_len $seq_len \
+    DATASET.label_len $label_len \
+    DATASET.pred_len 24 \
+    DATAINFO.datadir $data_path \
+    DEFAULT.exp_name forecasting_${data_name}_${model_name}_${seq_len}_24 \
+    TRAIN.batch_size $batch_size \
+    MODELSETTING.d_model 512 \
+    MODELSETTING.n_heads 8 
+
+# 2. pred_len = 48
+accelerate launch --num_processes 1 main.py \
+    --model_name $model_name \
+    --default_cfg ./configs/default_setting.yaml \
+    --model_cfg ./configs/model_setting.yaml \
+    DATASET.seq_len $seq_len \
+    DATASET.label_len $label_len \
+    DATASET.pred_len 48 \
+    DATAINFO.datadir $data_path \
+    DEFAULT.exp_name forecasting_${data_name}_${model_name}_${seq_len}_48 \
+    TRAIN.batch_size $batch_size \
+    MODELSETTING.d_model 512 \
+    MODELSETTING.n_heads 8 
+
+# 3. pred_len = 168
+accelerate launch --num_processes 1 main.py \
+    --model_name $model_name \
+    --default_cfg ./configs/default_setting.yaml \
+    --model_cfg ./configs/model_setting.yaml \
+    DATASET.seq_len $seq_len \
+    DATASET.label_len $label_len \
+    DATASET.pred_len 168 \
+    DATAINFO.datadir $data_path \
+    DEFAULT.exp_name forecasting_${data_name}_${model_name}_${seq_len}_168 \
+    TRAIN.batch_size $batch_size \
+    MODELSETTING.d_model 512 \
+    MODELSETTING.n_heads 8 
+
+# 4. pred_len = 336
+accelerate launch --num_processes 1 main.py \
+    --model_name $model_name \
+    --default_cfg ./configs/default_setting.yaml \
+    --model_cfg ./configs/model_setting.yaml \
+    DATASET.seq_len $seq_len \
+    DATASET.label_len $label_len \
+    DATASET.pred_len 336 \
+    DATAINFO.datadir $data_path \
+    DEFAULT.exp_name forecasting_${data_name}_${model_name}_${seq_len}_336 \
+    TRAIN.batch_size $batch_size \
+    MODELSETTING.d_model 512 \
+    MODELSETTING.n_heads 8 
+
+# 5. pred_len = 720
+accelerate launch --num_processes 1 main.py \
+    --model_name $model_name \
+    --default_cfg ./configs/default_setting.yaml \
+    --model_cfg ./configs/model_setting.yaml \
+    DATASET.seq_len $seq_len \
+    DATASET.label_len $label_len \
+    DATASET.pred_len 720 \
+    DATAINFO.datadir $data_path \
+    DEFAULT.exp_name forecasting_${data_name}_${model_name}_${seq_len}_720 \
+    TRAIN.batch_size $batch_size \
+    MODELSETTING.d_model 512 \
+    MODELSETTING.n_heads 8 
+
+# 6. pred_len = 960
+accelerate launch --num_processes 1 main.py \
+    --model_name $model_name \
+    --default_cfg ./configs/default_setting.yaml \
+    --model_cfg ./configs/model_setting.yaml \
+    DATASET.seq_len $seq_len \
+    DATASET.label_len $label_len \
+    DATASET.pred_len 960 \
+    DATAINFO.datadir $data_path \
+    DEFAULT.exp_name forecasting_${data_name}_${model_name}_${seq_len}_960 \
+    TRAIN.batch_size $batch_size \
+    MODELSETTING.d_model 512 \
+    MODELSETTING.n_heads 8 
+
+
+
+# 다변량
+# 1. pred_len = 24
+accelerate launch --num_processes 1 main.py \
+    --model_name $model_name \
+    --default_cfg ./configs/default_setting.yaml \
+    --model_cfg ./configs/model_setting.yaml \
+    DATASET.seq_len $seq_len \
+    DATASET.label_len $label_len \
+    DATASET.pred_len 24 \
+    DATASET.features "M" \
+    DATAINFO.datadir $data_path \
+    DEFAULT.exp_name forecasting_M_${data_name}_${model_name}_${seq_len}_24 \
+    TRAIN.batch_size $batch_size \
+    MODELSETTING.enc_in 7 \
+    MODELSETTING.dec_in 7 \
+    MODELSETTING.c_out 7 \
+    MODELSETTING.d_model 512 \
+    MODELSETTING.n_heads 8 
+
+# 2. pred_len = 48
+accelerate launch --num_processes 1 main.py \
+    --model_name $model_name \
+    --default_cfg ./configs/default_setting.yaml \
+    --model_cfg ./configs/model_setting.yaml \
+    DATASET.seq_len $seq_len \
+    DATASET.label_len $label_len \
+    DATASET.pred_len 48 \
+    DATASET.features "M" \
+    DATAINFO.datadir $data_path \
+    DEFAULT.exp_name forecasting_M_${data_name}_${model_name}_${seq_len}_48 \
+    TRAIN.batch_size $batch_size \
+    MODELSETTING.enc_in 7 \
+    MODELSETTING.dec_in 7 \
+    MODELSETTING.c_out 7 \
+    MODELSETTING.d_model 512 \
+    MODELSETTING.n_heads 8 
+
+# 3. pred_len = 168
+accelerate launch --num_processes 1 main.py \
+    --model_name $model_name \
+    --default_cfg ./configs/default_setting.yaml \
+    --model_cfg ./configs/model_setting.yaml \
+    DATASET.seq_len $seq_len \
+    DATASET.label_len $label_len \
+    DATASET.pred_len 168 \
+    DATASET.features "M" \
+    DATAINFO.datadir $data_path \
+    DEFAULT.exp_name forecasting_M_${data_name}_${model_name}_${seq_len}_168 \
+    TRAIN.batch_size $batch_size \
+    MODELSETTING.enc_in 7 \
+    MODELSETTING.dec_in 7 \
+    MODELSETTING.c_out 7 \
+    MODELSETTING.d_model 512 \
+    MODELSETTING.n_heads 8 
+
+# 4. pred_len = 336
+accelerate launch --num_processes 1 main.py \
+    --model_name $model_name \
+    --default_cfg ./configs/default_setting.yaml \
+    --model_cfg ./configs/model_setting.yaml \
+    DATASET.seq_len $seq_len \
+    DATASET.label_len $label_len \
+    DATASET.pred_len 336 \
+    DATASET.features "M" \
+    DATAINFO.datadir $data_path \
+    DEFAULT.exp_name forecasting_M_${data_name}_${model_name}_${seq_len}_336 \
+    TRAIN.batch_size $batch_size \
+    MODELSETTING.enc_in 7 \
+    MODELSETTING.dec_in 7 \
+    MODELSETTING.c_out 7 \
+    MODELSETTING.d_model 512 \
+    MODELSETTING.n_heads 8 
+
+# 5. pred_len = 720
+accelerate launch --num_processes 1 main.py \
+    --model_name $model_name \
+    --default_cfg ./configs/default_setting.yaml \
+    --model_cfg ./configs/model_setting.yaml \
+    DATASET.seq_len $seq_len \
+    DATASET.label_len $label_len \
+    DATASET.pred_len 720 \
+    DATASET.features "M" \
+    DATAINFO.datadir $data_path \
+    DEFAULT.exp_name forecasting_M_${data_name}_${model_name}_${seq_len}_720 \
+    TRAIN.batch_size $batch_size \
+    MODELSETTING.enc_in 7 \
+    MODELSETTING.dec_in 7 \
+    MODELSETTING.c_out 7 \
+    MODELSETTING.d_model 512 \
+    MODELSETTING.n_heads 8 
+
+# 6. pred_len = 960
+accelerate launch --num_processes 1 main.py \
+    --model_name $model_name \
+    --default_cfg ./configs/default_setting.yaml \
+    --model_cfg ./configs/model_setting.yaml \
+    DATASET.seq_len $seq_len \
+    DATASET.label_len $label_len \
+    DATASET.pred_len 960 \
+    DATASET.features "M" \
+    DATAINFO.datadir $data_path \
+    DEFAULT.exp_name forecasting_M_${data_name}_${model_name}_${seq_len}_960 \
+    TRAIN.batch_size $batch_size \
+    MODELSETTING.enc_in 7 \
+    MODELSETTING.dec_in 7 \
+    MODELSETTING.c_out 7 \
+    MODELSETTING.d_model 512 \
+    MODELSETTING.n_heads 8 
