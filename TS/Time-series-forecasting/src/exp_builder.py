@@ -9,6 +9,7 @@ import torch.nn as nn
 from collections import OrderedDict
 from accelerate import Accelerator
 from accelerate.logging import get_logger
+import matplotlib.pyplot as plt
 
 from utils.metrics import cal_metric
 from utils.utils import Float32Encoder
@@ -302,6 +303,27 @@ def test_dl(model, dataloader, criterion, accelerator: Accelerator,
     
     total_outputs = np.concatenate(total_outputs, axis=0)
     total_targets = np.concatenate(total_targets, axis=0)
+
+    # 시각화: 예측 결과와 실제 값을 비교하는 그래프
+    if accelerator.is_main_process:
+        try:
+            plt.figure(figsize=(12, 6))
+            plt.plot(total_targets[0, :, -1], label='Ground Truth (Actual)', color='royalblue', linewidth=2)
+            plt.plot(total_outputs[0, :, -1], label='Model Prediction', color='darkorange', linewidth=2, linestyle='--')
+            
+            plt.title(f'Time-Series Forecasting Result ({name} - Sample 0)', fontsize=16)
+            plt.xlabel('Future Time Steps', fontsize=12)
+            plt.ylabel('Scaled Value', fontsize=12)
+            plt.legend(fontsize=12, loc='upper left')
+            plt.grid(True, linestyle=':', alpha=0.7)
+            
+            save_path = os.path.join(savedir, f'{name}_prediction_plot.png')
+            plt.savefig(save_path, dpi=300)
+            plt.close()
+            
+            _logger.info(f"📊 {name} Prediction plot saved to: {save_path}")
+        except Exception as e:
+            _logger.warning(f"⚠️ Failed to draw prediction plot: {e}")
     
     results = cal_metric(total_outputs, total_targets)
     _logger.info(f'{name} Results: {results}')
