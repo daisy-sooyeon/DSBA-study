@@ -1,0 +1,14 @@
+LSTM_AE:
+  feature_num: 5
+  rnn_type: 'LSTM'
+  rnn_inp_size: 64
+  rnn_hid_size: 128
+  nlayers: 2
+  dropout: 0.1
+  res_connection: false
+  return_hiddens: false
+
+TranAD:
+  feature_num: 25
+  pot_q: 1e-4
+  pot_level: 0.999
