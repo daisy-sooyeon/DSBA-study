@@ -20,7 +20,7 @@ accelerate launch --num_processes 1 main.py \
     DEFAULT.exp_name forecasting_${data_name}_${model_name}_${seq_len}_24 \
     TRAIN.batch_size $batch_size \
     MODELSETTING.d_model 512 \
-    MODELSETTING.n_heads 8 
+    MODELSETTING.n_heads 8
 
 # 2. pred_len = 48
 accelerate launch --num_processes 1 main.py \

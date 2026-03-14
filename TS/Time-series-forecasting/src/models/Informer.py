@@ -5,6 +5,7 @@ import numpy as np
 import math
 from math import sqrt
 from utils.masking import TriangularCausalMask, ProbMask
+from layers.RevIN import RevIN
 
 # ===================================================================
 # 1. Embedding Layers (임베딩 부품들)
@@ -456,6 +457,9 @@ class InformerStack(nn.Module):
         self.attn = configs.attn
         self.output_attention = configs.output_attention
 
+        if configs.use_revin:
+            self.revin_layer = RevIN(num_features=configs.enc_in, affine=True)
+
         # Encoding
         self.enc_embedding = DataEmbedding(configs.enc_in, configs.d_model, configs.embed, configs.freq, configs.dropout)
         self.dec_embedding = DataEmbedding(configs.dec_in, configs.d_model, configs.embed, configs.freq, configs.dropout)
@@ -514,14 +518,21 @@ class InformerStack(nn.Module):
     def forward(self, x_enc, x_mark_enc, x_dec, x_mark_dec, 
                 enc_self_mask=None, dec_self_mask=None, dec_enc_mask=None):
         
+        if self.revin_layer:
+            x_enc = self.revin_layer(x_enc, mode='norm')
+        
         enc_out = self.enc_embedding(x_enc, x_mark_enc)
         enc_out, attns = self.encoder(enc_out, attn_mask=enc_self_mask)
 
         dec_out = self.dec_embedding(x_dec, x_mark_dec)
         dec_out = self.decoder(dec_out, enc_out, x_mask=dec_self_mask, cross_mask=dec_enc_mask)
         dec_out = self.projection(dec_out)
+
+        preds = dec_out[:, -self.pred_len:, :]
+        if self.revin_layer:
+            preds = self.revin_layer(preds, mode='denorm')
         
         if self.output_attention:
-            return dec_out[:, -self.pred_len:, :], attns
+            return preds, attns
         else:
-            return dec_out[:, -self.pred_len:, :] # [B, L, D]
+            return preds # [B, L, D]

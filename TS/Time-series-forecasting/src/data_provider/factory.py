@@ -45,12 +45,7 @@ def create_dataloader(
         )
     
     # scaling (minmax, minmax square, minmax m1p1, standard)
-    trn, val, tst = apply_scaling(
-                    scaler=scaler,
-                    trn=trn,
-                    val=val,
-                    tst=tst
-                    )
+    trn, val, tst = apply_scaling(scaler=scaler, trn=trn, val=val, tst=tst)
 
     # build dataset
     trn_dataset = BuildDataset(trn, trn_ts, seq_len, pred_len)

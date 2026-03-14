@@ -22,3 +22,4 @@ InformerStack:
   distil: true
   mix: true
   activation: 'gelu'
+  use_revin: true
